@@ -3,12 +3,14 @@ import pygame as pg
 from config import *
 
 class Train:
-    # y = mx + c
-    m = 0.5
-    c = 0.7
+    def __init__(self, m, c) -> None:
+        # y = mx + c
+        self.m = m
+        self.c = c
+        # Perceptron guess this by using Y = (Wy/Wx) * x + Bias
 
     def f(self, x) -> float:
-        return Train.m * x + Train.c
+        return self.m * x + self.c
     
     def toPixels(self, point: tuple[float, float]) -> tuple[int, int]:
         pix_x = round((point[0] + 1.0) * (WIDTH - 1) / 2)
@@ -23,12 +25,13 @@ class Train:
         p1_ = self.toPixels(p1)
         p2_ = self.toPixels(p2)
         
-        pg.draw.line(canvas, "#00FF00", p1_, p2_, 2)
+        pg.draw.line(canvas, "#F2F7F2", p1_, p2_, 2)
         
         
 
 class Point(Train):
-    def __init__(self) -> None:
+    def __init__(self, m: float, c: float) -> None:
+        super().__init__(m, c)
         
         self.x = np.random.uniform(-1.0, 1.0)
         self.y = np.random.uniform(-1.0, 1.0)
