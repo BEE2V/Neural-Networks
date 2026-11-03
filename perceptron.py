@@ -1,5 +1,6 @@
 import numpy as np
 import pygame as pg
+from config import *
 
 # Activation Function
 def sign(number): 
@@ -40,37 +41,26 @@ class Perceptron:
 
         for i, value in enumerate(inputs_with_bias):
             self.weights[i] += error * value * Perceptron.lr
+                
+    def guessY(self, x: float) -> float:
+        w0, w1, w2 = self.weights
+        return -(w2/w1) - (w0/w1) * x
 
-    def show(self, screen) -> None:
-        if self.NofInputs != 2:
-            raise ValueError("Decision-boundary drawing requires exactly 2 inputs")
-
-        weight_x, weight_y, bias_weight = self.weights
-        if weight_x == 0 and weight_y == 0:
-            return
-
-        width, height = screen.get_size()
-        intersections = []
-
-        if weight_y != 0:
-            for x in (-1.0, 1.0):
-                y = -(weight_x * x + bias_weight * self.bias) / weight_y
-                if -1.0 <= y <= 1.0:
-                    intersections.append((x, y))
-
-        if weight_x != 0:
-            for y in (-1.0, 1.0):
-                x = -(weight_y * y + bias_weight * self.bias) / weight_x
-                if -1.0 <= x <= 1.0:
-                    intersections.append((x, y))
-
-        intersections = list(dict.fromkeys(intersections))
-        if len(intersections) >= 2:
-            pixel_points = [
-                (
-                    round((x + 1.0) * (width - 1) / 2),
-                    round((1.0 - y) * (height - 1) / 2),
-                )
-                for x, y in intersections[:2]
-            ]
-            pg.draw.line(screen, "#16C639", pixel_points[0], pixel_points[1], 2)
+    def toPixels(self, point: tuple[float, float]) -> tuple[int, int]:
+        pix_x = round((point[0] + 1.0) * (WIDTH - 1) / 2)
+        pix_y = round((1.0 - point[1]) * (HEIGHT - 1) / 2)
+        
+        return (pix_x, pix_y)
+            
+    def show(self, screen: pg.Surface) -> None:
+        point0 = (-1, self.guessY(-1))
+        point1 = ( 1, self.guessY( 1))
+        
+        pixel_point0 = self.toPixels(point0)
+        pixel_point1 = self.toPixels(point1)
+        
+        pg.draw.line(screen, "#16C639", pixel_point0, pixel_point1, 2)
+         
+        
+        
+        

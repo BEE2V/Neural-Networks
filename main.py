@@ -92,5 +92,6 @@ def main() -> None:
         clock.tick(60)
 
     pg.quit()
+    
 if __name__ == "__main__":
     main()
