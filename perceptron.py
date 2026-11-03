@@ -39,22 +39,27 @@ class Perceptron:
             return
 
         width, height = screen.get_size()
-        max_x = width - 1
-        max_y = height - 1
         intersections = []
 
         if weight_y != 0:
-            for x in (0, max_x):
+            for x in (-1.0, 1.0):
                 y = -weight_x * x / weight_y
-                if 0 <= y <= max_y:
-                    intersections.append((x, round(y)))
+                if -1.0 <= y <= 1.0:
+                    intersections.append((x, y))
 
         if weight_x != 0:
-            for y in (0, max_y):
+            for y in (-1.0, 1.0):
                 x = -weight_y * y / weight_x
-                if 0 <= x <= max_x:
-                    intersections.append((round(x), y))
+                if -1.0 <= x <= 1.0:
+                    intersections.append((x, y))
 
         intersections = list(dict.fromkeys(intersections))
         if len(intersections) >= 2:
-            pg.draw.line(screen, "#FFFFFF", intersections[0], intersections[1], 2)
+            pixel_points = [
+                (
+                    round((x + 1.0) * (width - 1) / 2),
+                    round((1.0 - y) * (height - 1) / 2),
+                )
+                for x, y in intersections[:2]
+            ]
+            pg.draw.line(screen, "#FFFFFF", pixel_points[0], pixel_points[1], 2)

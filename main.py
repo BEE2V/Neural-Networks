@@ -1,31 +1,19 @@
 import pygame as pg
-from training import Point
+from training import Point, Train
 from perceptron import Perceptron
+from config import *
 
-WIDTH = 700
-HEIGHT = 700
-DASH_LENGTH = 12
-DASH_SPACING = 20
-
-BLACK = "#181818"
-BLUE = "#0000FF"
-YELLOW = "#B9CF12"
-POINT_BLUE = "#15BFE5"
-GREEN = "#11980A"
-RED = "#B30808"
-
-
-NOFPOINTS = 100
 points = []
 
-BATCH_SIZE = 50
+
 Training_Index = 0
 Points_Trained = 0
 
 for i in range(NOFPOINTS):
-    points.append(Point(WIDTH, HEIGHT))
+    points.append(Point())
 
 percept = Perceptron(2)
+training_line = Train()
 
 # Train the perceptron
 def train():
@@ -69,10 +57,7 @@ def main() -> None:
 
         screen.fill(BLACK)
 
-        for offset in range(0, min(WIDTH, HEIGHT), DASH_SPACING):
-            end = min(offset + DASH_LENGTH, min(WIDTH, HEIGHT) - 1)
-            pg.draw.line(screen, BLUE, (offset, offset), (end, end), 2)
-
+        training_line.show_line(screen)
         percept.show(screen)
 
         for point in points:
