@@ -8,6 +8,7 @@ def sign(number):
         return -1
 
 class Perceptron:
+    lr = 0.1                # Learning Rate
     
     def __init__(self, NofConnections: int) -> None:
         self.weights = []
@@ -22,4 +23,11 @@ class Perceptron:
             
         return sign(sum)
         
-          
+    def train(self, inputs: list[float], target: int) -> None:
+      
+      guess = self.guess(inputs)
+      error = target - guess
+      
+      # TUne all the weights
+      for i in range(self.NofConnections):
+          self.weights[i] += error * inputs[i] * Perceptron.lr     

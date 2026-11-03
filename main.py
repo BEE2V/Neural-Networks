@@ -1,5 +1,6 @@
 import pygame as pg
 from training import Point
+from perceptron import Perceptron
 
 WIDTH = 700
 HEIGHT = 700
@@ -14,9 +15,13 @@ points = []
 for i in range(NOFPOINTS):
     points.append(Point(WIDTH, HEIGHT))
 
+percept = Perceptron(2)
 
+# Train the perceptron
 
-
+for point in points:
+    inputs = [point.x, point.y]
+    percept.train(inputs, point.label)
 
 
 
